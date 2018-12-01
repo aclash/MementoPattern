@@ -1,55 +1,39 @@
 package cs603.mementoHw;
 
-public class Hero {
-    private int currentHP;
-    private int maxHP;
-    private int AP;
+public class Hero extends Character{
     private String name;
-    private static final int INITIAL_MAX_HP = 5;
-    private static final int INITIAL_AP = 1;
-    Hero(String name){
+    private int bonusAttck;
+    Hero(String name, int maxHP, int AP){
+        super(maxHP, AP);
         this.name = name;
-        maxHP = INITIAL_MAX_HP;
-        currentHP = INITIAL_MAX_HP;
-        AP = INITIAL_AP;
+        bonusAttck = 1;
     }
-    public int getLife(){
-        return currentHP;
-    }
-    public int getMaxLife(){
-        return maxHP;
-    }
-    public int getAttack(){
-        return AP;
-    }
-    public void damage(int amount){
-        currentHP -= amount;
-    }
-    public void getWinBonus(){
-        maxHP++;
-        AP++;
+    public void heroUpgrade(){
+        ++maxHP;
+        AP += bonusAttck;
     }
     public String toString(){
         return name + ": life/maxLife = " + currentHP + "/" + maxHP + ", attack = " + AP;
     }
     public class HeroState{
-        private int hp;
-        private int ap;
+        private int maxHP;
+        private int AP;
 
         HeroState(int hp, int ap) {
-            this.hp = hp;
-            this.ap = ap;
+            maxHP = hp;
+            AP = ap;
         }
+        int getMaxHP(){ return maxHP;}
+        int getAP(){ return AP;}
     }
-    private HeroState state;
 
-    public HeroState checkpoint(){
+    public HeroState checkpoint(){                      //recorder state
         return new HeroState(maxHP, AP);
     }
 
-    public void restore(HeroState state){
-        this.state = state;
-        this.currentHP = this.maxHP;
+    public void restore(HeroState state){               //rest to the memento state
+        this.currentHP = state.getMaxHP();
+        this.maxHP = state.getMaxHP();
+        this.AP = state.getAP();
     }
-
 }
